@@ -46,6 +46,7 @@ main {
 	width: 720px;
 	max-width: calc(100% - 2em);
 	margin: auto;
+	margin-top: 4rem;
 	padding: 3em 1em;
 }
 h1,
@@ -151,4 +152,13 @@ hr {
 	clip-path: inset(50%);
 	/* added line to stop words getting smushed together (as they go onto seperate lines and some screen readers do not understand line feeds as a space */
 	white-space: nowrap;
+}
+[data-icon] {
+    font-size: 3rem;
+    color: var(--brand-color);
+}
+
+.about-md img{
+	align-items: center;
+	margin-top: 2px;
 }
