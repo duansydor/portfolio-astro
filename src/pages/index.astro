@@ -3,6 +3,14 @@ import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+import { supabase } from "../utils/supabaseConf";
+
+let { data, error } = await supabase
+  .from('portfolio')
+  .select('*')
+  .single()
+console.log({data,error})
+
 ---
 
 <!doctype html>
@@ -12,27 +20,28 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 	</head>
 	<body>
 		<Header />
-		<main>
-			<div
-				class="relative p-10 h-auto text-blue-950 flex items-start flex-col md:flex-row "
-			>
-				<div class="mt-auto mb-auto">
-					<h1 class="mt-auto text-2xl font-bold" id="title">
-						MEU ESPAÇO VIRTUAL
+		<section
+			class=" w-full mt-12 relative p-5 h-auto justify-center text-blue-950 flex items-start flex-col md:flex-row md:p-10"
+		>
+			<div class="w-full mt-24 mb-auto flex md:mt-auto">
+				<div>
+					<h1 class="mt-auto text-4xl font-bold text-blue-950" id="title">
+						{data.title}
 					</h1>
-					<h1 class="text-xl font-bold">sinta-se em casa!</h1>
-					<p class="mt-2 w-96 text-lg font-light mb-auto sm:w-96">
-						Seja bem vindo ao meu Portfólio. Me chamo Duan e sou um
-						desenvolvedor front-end junior da cidade de Guarapuava,
-						no Paraná. Atualmente estudo: NextJS, TailwindCSS e
-						NodeJS mas possuo também experiencia básica com Java e
-						Python.
+					<h1 class="text-3xl font-bold -mt-3 text-blue-950">{data.subtitle}</h1>
+					<p class="mt-2 w-full text-2xl font-light mb-auto md:w-[550px] sm:w-full">
+						{data.content}
 					</p>
-				</div>
-				<div class="-pb-20">
-					<img class="w-96" src="/Hero.svg" alt="|Hero" />
+					<div class="mt-4 flex gap-4">
+						<a href="/projects" class=" flex items-center justify-center text-center rounded-lg bg-cyan-700 w-52 text-white p-2 hover:bg-cyan-600 duration-300 hover:text-white">Meus Projetos!</a>
+						<a href="/" class="flex items-center justify-center rounded-lg border-2 w-52 p-2 border-cyan-700 text-cyan-700 text-center hover:text-cyan-600">Blog</a>
+					</div>
 				</div>
 			</div>
+				<img class="w-[500px] h-[500px]" src="/Hero.svg" alt="|Hero" />
+		</section>
+		<main class="w-full p-10 flex">
+			<h3>Meus Projetos</h3>
 		</main>
 		<Footer />
 	</body>
