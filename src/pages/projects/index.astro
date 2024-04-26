@@ -1,27 +1,49 @@
 ---
-
+import { Image } from "astro:assets";
 import BaseHead from "../../components/BaseHead.astro";
 import Footer from "../../components/Footer.astro";
 import Header from "../../components/Header.astro";
 import { SITE_DESCRIPTION, SITE_TITLE } from "../../consts";
-import { supabase } from "../../utils/supabaseConf";
+import { getFile, supabase } from "../../utils/supabaseConf";
+import ProjectCard from "../../components/ProjectCard.astro";
 
-let { data, error } = await supabase
-  .from('portfolio')
-  .select('*')
-  .single()
-console.log({data,error})
+let { data, error } = await supabase.from("portfolio").select("*").single();
+console.log({ data, error });
+let { data: projects } = await supabase.from("projects").select("*");
 ---
-<!DOCTYPE html>
+
+<!doctype html>
 <html lang="en">
-<head>
-    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION}>
-</head>
-<body>
-    <Header/>
-    <main class="m-2 mt-12">
-        <h3>{data.Ttitle}</h3>
-    </main>
-    <Footer/>
-</body>
+    <head>
+        <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+    </head><body>
+        <Header />
+        <main class="m-2 mt-12 w-full flex flex-col place-items-center">
+            <h3>{data.Ttitle}</h3>
+            <Image
+                src={getFile("blog-placeholder-2.jpg")}
+                alt="Banner image"
+                width={600}
+                height={600}
+            />
+            <div
+                class="place-items-center w-full mt-10 grid grid-cols-1 gap-6 md:grid-cols-4 md:gap-14"
+            >
+                {
+                    projects ? (
+                        projects.map((project) => (
+                            <ProjectCard
+                                title={project.title}
+                                subtitle={project.subtitle}
+                                slug={`/projects/${project.slug}`}
+                            />
+                        ))
+                    ) : (
+                        <span>No projects to display</span>
+                    )
+                }
+            </div>
+        </main>
+        <Footer />
+    </body>
 </html>

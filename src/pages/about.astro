@@ -1,6 +1,8 @@
 ---
 import Layout from "../layouts/BlogPost.astro";
 import { Markdown } from "astro-remote";
+import { getFile } from "../utils/supabaseConf";
+import { Image } from "astro:assets";
 let response: string = "";
 const markdown = await fetch(
 	"http://raw.githubusercontent.com/duansydor/duansydor/main/README.md",
@@ -12,9 +14,16 @@ console.log(typeof markdown);
 	title="About Me"
 	description="Lorem ipsum dolor sit amet"
 	pubDate={new Date("August 08 2021")}
-	heroImage="/blog-placeholder-about.jpg"
 >
+<Image
+		src={getFile("Profile.webp")}
+		width={200}
+		height={200}
+		alt="profile picture"
+		class="rounded-full m-10 ml-auto mr-auto"
+		/>
 	<div class="about-md">
+		
 		<Markdown content={markdown} />
 	</div>
 </Layout>

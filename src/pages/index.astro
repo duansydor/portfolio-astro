@@ -4,12 +4,16 @@ import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 import { supabase } from "../utils/supabaseConf";
+import ProjectCard from "../components/ProjectCard.astro";
 
 let { data, error } = await supabase
   .from('portfolio')
   .select('*')
   .single()
-console.log({data,error})
+
+let {data: projects} = await supabase
+  .from('projects')
+  .select("*")
 
 ---
 
@@ -40,8 +44,17 @@ console.log({data,error})
 			</div>
 				<img class="w-[500px] h-[500px]" src="/Hero.svg" alt="|Hero" />
 		</section>
-		<main class="w-full p-10 flex">
+		<main class="w-full p-10 flex flex-col">
 			<h3>Meus Projetos</h3>
+			<div class="place-items-center w-full mt-10 grid grid-cols-1 gap-6 md:grid-cols-4 md:gap-14">
+				{projects?projects.map(project => 
+				<ProjectCard 
+				title={project.title}
+				subtitle={project.subtitle}
+				slug={`/projects/${project.slug}`}
+				/>
+				):<span>No projects to display</span>}
+			</div>
 		</main>
 		<Footer />
 	</body>

@@ -1,0 +1,41 @@
+---
+import BaseHead from "../../components/BaseHead.astro";
+import Footer from "../../components/Footer.astro";
+import Header from "../../components/Header.astro";
+import { supabase } from "../../utils/supabaseConf";
+import { Markdown } from "astro-remote";
+
+const url = Astro.url;
+export async function getStaticPaths() {
+  let { data: projects } = await supabase.from("projects").select("*");
+  console.log(projects);
+  if (!projects) {
+    return;
+  }
+  return projects.map((project) => {
+    return {
+      params: { slug: project.slug },
+      props: { project },
+    };
+  });
+}
+const { project } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title={project.title} description={project.subtitle} />
+  </head>
+  <body>
+    <Header />
+    <main class="ml-auto mr-auto mt-24 md:mt-12">
+      <div class="mb-10">
+        <h2 class="text-4xl font-bold">{project.title}</h2>
+        <h3 class="text-2xl font-light">{project.subtitle}</h3>
+      </div>
+      <Markdown content={project.content} />
+    </main>
+    <Footer />
+  </body>
+</html>

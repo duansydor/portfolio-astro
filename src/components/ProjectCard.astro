@@ -1,0 +1,20 @@
+---
+
+
+const {title,image,subtitle,slug} = Astro.props
+
+---
+
+<div class="relative w-64 m-4">
+    <div class="relative h-56 w-64 bg-slate-400 rounded-md"></div>
+    <div class="absolute top-4 left-3 flex flex-col justify-start items-start">
+        <span class="text-3xl font-bold w-56">{title}</span>
+        <p class="text-md w-64">{subtitle}</p>
+    </div>
+    <a
+        href={slug}
+        class="absolute !w-64 text-center text-white bg-cyan-500 mt-2 rounded-md hover:bg-cyan-600 hover:text-white"
+    >
+        Confira
+    </a>
+</div>
