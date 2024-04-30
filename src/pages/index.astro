@@ -5,7 +5,8 @@ import Footer from "../components/Footer.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 import { supabase } from "../utils/supabaseConf";
 import ProjectCard from "../components/ProjectCard.astro";
-
+import { Image } from "astro:assets";
+export const prerender = true;
 let { data, error } = await supabase
   .from('portfolio')
   .select('*')
@@ -42,7 +43,7 @@ let {data: projects} = await supabase
 					</div>
 				</div>
 			</div>
-				<img class="w-[500px] h-[500px]" src="/Hero.svg" alt="|Hero" />
+				<Image class="w-[500px] h-[500px]" width={500} height={500} src="/Hero.webp" alt="Hero" />
 		</section>
 		<main class="w-full p-10 flex flex-col">
 			<h3>Meus Projetos</h3>

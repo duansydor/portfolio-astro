@@ -1,0 +1,53 @@
+---
+import { type CollectionEntry, getCollection } from "astro:content";
+import BlogPost from "../../layouts/BlogPost.astro";
+import {
+	getAllBlogsName,
+	getFile,
+	supabase,
+	fetchData,
+} from "../../utils/supabaseConf";
+import parse from "gray-matter";
+import useLocation from "astro";
+import { Markdown } from "astro-remote";
+
+export async function getStaticPaths() {
+	// Generate paths for your blog posts here (if needed)
+	const files = await getAllBlogsName();
+	let properties = new Array();
+	files.map((file) => {
+		const contentResponse = fetchData(file.url);
+		properties.push({
+			params: { slug: file.name.replace(".md", "") },
+			props: { content: contentResponse },
+		});
+	});
+
+	return properties;
+	// return [
+	// 	{ params: { slug: "markdown-style-guide" }, props: {content:"opa"} },
+	// 	{ params: { slug: "post-2" } },
+	// ];
+}
+const { slug } = Astro.params;
+const { content } = Astro.props;
+
+const frontMatter = parse(await content);
+const mdcontent = await content;
+
+console.log("ainz e da manga",getFile(frontMatter.data.heroImage))
+---
+
+<BlogPost
+	title={frontMatter.data.title}
+	description={frontMatter.data.description}
+	pubDate={new Date(frontMatter.data.pubDate)}
+	heroImage={getFile(frontMatter.data.heroImage)}
+>
+	<div class="flex flex-col max-w-2xlprose dark:prose-invert
+	prose-h1:font-bold prose-h1:text-xl
+	prose-a:text-blue-600 prose-p:text-justify prose-img:rounded-xl
+	prose-headings:underline">
+		<Markdown>{frontMatter.content}></Markdown>
+	</div>
+</BlogPost>

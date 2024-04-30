@@ -8,11 +8,13 @@ import { Markdown } from "astro-remote";
 const url = Astro.url;
 export async function getStaticPaths() {
   let { data: projects } = await supabase.from("projects").select("*");
-  console.log(projects);
   if (!projects) {
+    Astro.redirect("/");
+    console.log('opa')
     return;
   }
   return projects.map((project) => {
+    console.log("projeto",project.slug)
     return {
       params: { slug: project.slug },
       props: { project },
