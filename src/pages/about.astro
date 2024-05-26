@@ -1,29 +1,17 @@
 ---
-import Layout from "../layouts/BlogPost.astro";
-import { Markdown } from "astro-remote";
-import { getFile } from "../utils/supabaseConf";
-import { Image } from "astro:assets";
-let response: string = "";
-const markdown = await fetch(
-	"http://raw.githubusercontent.com/duansydor/duansydor/main/README.md",
-).then((res) => res.text());
-console.log(typeof markdown);
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
 ---
 
-<Layout
-	title="About Me"
-	description="Lorem ipsum dolor sit amet"
-	pubDate={new Date("August 08 2021")}
->
-<Image
-		src={getFile("Profile.webp")}
-		width={200}
-		height={200}
-		alt="profile picture"
-		class="rounded-full m-10 ml-auto mr-auto"
-		/>
-	<div class="about-md">
-		
-		<Markdown content={markdown} />
-	</div>
-</Layout>
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title="Sobre mim" description="" />
+	</head>
+	<body>
+		<Header />
+		<main class="m-2 mt-12 w-full flex flex-col place-items-center">
+			<section>Ola</section>
+		</main>
+	</body>
+</html>

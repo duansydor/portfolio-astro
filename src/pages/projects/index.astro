@@ -10,6 +10,7 @@ import ProjectCard from "../../components/ProjectCard.astro";
 let { data, error } = await supabase.from("portfolio").select("*").single();
 console.log({ data, error });
 let { data: projects } = await supabase.from("projects").select("*");
+console.log("oi");
 ---
 
 <!doctype html>
@@ -20,12 +21,6 @@ let { data: projects } = await supabase.from("projects").select("*");
         <Header />
         <main class="m-2 mt-12 w-full flex flex-col place-items-center">
             <h3>{data.Ttitle}</h3>
-            <Image
-                src={getFile("blog-placeholder-2.jpg")}
-                alt="Banner image"
-                width={600}
-                height={600}
-            />
             <div
                 class="place-items-center w-full mt-10 grid grid-cols-1 gap-6 md:grid-cols-4 md:gap-14"
             >
@@ -36,6 +31,7 @@ let { data: projects } = await supabase.from("projects").select("*");
                                 title={project.title}
                                 subtitle={project.subtitle}
                                 slug={`/projects/${project.slug}`}
+                                image={project.images}
                             />
                         ))
                     ) : (

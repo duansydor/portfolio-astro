@@ -1,21 +1,16 @@
 ---
+import { Image } from "astro:assets";
+
 import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 import { supabase } from "../utils/supabaseConf";
 import ProjectCard from "../components/ProjectCard.astro";
-import { Image } from "astro:assets";
 export const prerender = true;
-let { data, error } = await supabase
-  .from('portfolio')
-  .select('*')
-  .single()
+let { data, error } = await supabase.from("portfolio").select("*").single();
 
-let {data: projects} = await supabase
-  .from('projects')
-  .select("*")
-
+let { data: projects } = await supabase.from("projects").select("*");
 ---
 
 <!doctype html>
@@ -26,35 +21,65 @@ let {data: projects} = await supabase
 	<body>
 		<Header />
 		<section
-			class=" w-full mt-12 relative p-5 h-auto justify-center text-blue-950 flex items-start flex-col md:flex-row md:p-10"
+			class="w-full mt-12 relative p-5 h-auto justify-center text-blue-950 flex items-start flex-col md:flex-row md:p-10"
 		>
 			<div class="w-full mt-24 mb-auto flex md:mt-auto">
 				<div>
-					<h1 class="mt-auto text-4xl font-bold text-blue-950" id="title">
+					<h1
+						class="mt-auto text-4xl font-bold text-blue-950"
+						id="title"
+					>
 						{data.title}
 					</h1>
-					<h1 class="text-3xl font-bold -mt-3 text-blue-950">{data.subtitle}</h1>
-					<p class="mt-2 w-full text-2xl font-light mb-auto md:w-[550px] sm:w-full">
+					<h1 class="text-3xl font-bold -mt-3 text-blue-950">
+						{data.subtitle}
+					</h1>
+					<p
+						class="mt-2 w-full text-2xl font-light mb-auto md:w-[550px] sm:w-full"
+					>
 						{data.content}
 					</p>
 					<div class="mt-4 flex gap-4">
-						<a href="/projects" class=" flex items-center justify-center text-center rounded-lg bg-cyan-700 w-52 text-white p-2 hover:bg-cyan-600 duration-300 hover:text-white">Meus Projetos!</a>
-						<a href="/" class="flex items-center justify-center rounded-lg border-2 w-52 p-2 border-cyan-700 text-cyan-700 text-center hover:text-cyan-600">Blog</a>
+						<a
+							href="/projects"
+							class="flex items-center justify-center text-center rounded-lg bg-cyan-700 w-52 text-white p-2 hover:bg-cyan-600 duration-300 hover:text-white"
+							>Meus Projetos!</a
+						>
+						<a
+							href="/"
+							class="flex items-center justify-center rounded-lg border-2 w-52 p-2 border-cyan-700 text-cyan-700 text-center hover:text-cyan-600"
+							>Blog</a
+						>
 					</div>
 				</div>
 			</div>
-				<Image class="w-[500px] h-[500px]" width={500} height={500} src="/Hero.webp" alt="Hero" />
+			<Image
+				class="w-[500px] h-[500px]"
+				width={500}
+				height={500}
+				src="/Hero.webp"
+				alt="Hero"
+			/>
 		</section>
 		<main class="w-full p-10 flex flex-col">
 			<h3>Meus Projetos</h3>
-			<div class="place-items-center w-full mt-10 grid grid-cols-1 gap-6 md:grid-cols-4 md:gap-14">
-				{projects?projects.map(project => 
-				<ProjectCard 
-				title={project.title}
-				subtitle={project.subtitle}
-				slug={`/projects/${project.slug}`}
-				/>
-				):<span>No projects to display</span>}
+			<div
+				class="place-items-center w-full mt-10 grid grid-cols-1 gap-6 md:grid-cols-4 md:gap-14"
+			>
+				{
+					projects ? (
+						projects.map((project) => (
+							<ProjectCard
+								title={project.title}
+								subtitle={project.subtitle}
+								slug={`/projects/${project.slug}`}
+								image={project.images}
+							/>
+						))
+					) : (
+						<span>No projects to display</span>
+					)
+				}
 			</div>
 		</main>
 		<Footer />
